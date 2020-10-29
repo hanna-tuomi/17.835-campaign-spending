@@ -1,6 +1,6 @@
 # script to clean federal election results
 
-setwd('~/Desktop/17.835-campaign-spending/Results')
+setwd('~/Desktop/17.835-campaign-spending/Results/Raw')
 
 results.2008 <- read.csv('results08.csv')
 results.2010 <- read.csv('results10.csv')
