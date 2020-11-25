@@ -1,6 +1,6 @@
 #kmeans clustering attempt
 
-expends <- read.csv('expends_data/expenditure_data.csv')
+expends <- read.csv('expends_data/expenditure_data_new.csv')
 selected <- expends[,c("Candid","Amount","Cycle","Expcode")]
 aggregate(selected$Amount, by=list(selected$Candid), FUN=sum)
 table <- aggregate(selected$Amount, by=list(selected$Candid, selected$Expcode, selected$Cycle), FUN=sum)
@@ -42,8 +42,11 @@ spending_by_cand <- data.frame(Year=character(),
                                M20=numeric(),
                                M30=numeric(),
                                M40=numeric(),
-                               M50=numeric())
-
+                               M50=numeric(),
+                               S10=numeric(),
+                               S20=numeric(),
+                               S50=numeric(),
+                               R10=numeric())
 
 for (c in cand_2008){
   spending <- t_2008[t_2008$Group.1==c,]
@@ -102,6 +105,6 @@ for (c in cand_2014){
 }
 
 # only needed to run once
-#write.csv(spending_by_cand,'expends_data/spending_by_candidate_and_category.csv')
+write.csv(spending_by_cand,'expends_data/spending_by_candidate_and_category_new.csv')
 
 

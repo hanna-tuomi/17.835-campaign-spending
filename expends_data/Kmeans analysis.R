@@ -1,8 +1,9 @@
-# Try Kmenas
+# Try Kmeans
 
-spending_by_cand <- read.csv('expends_data/spending_by_candidate_and_category.csv')
-
-X = spending_by_cand[,4:10]
+spending_by_cand <- read.csv('spending_by_candidate_and_category_new.csv')
+print(colnames(spending_by_cand))
+year_candidate <- spending_by_cand[,2:3]
+X = spending_by_cand[,4:14]
 X[is.na(X)] <- 0
 
 # find ideal number of clusters
@@ -73,6 +74,8 @@ text(cluster_7$X_first_score, cluster_7$X_second_score,
      labels=rep(7,length(cluster_7)), col='darkorange1', cex=0.7)
 
 
+final = cbind(year_candidate, X)
+write.csv(final,'spending clusters.csv')
 
 
   

@@ -1,7 +1,7 @@
 # Create figure with total spending and and vote share 
 
 setwd('~/Desktop/17.835-campaign-spending')
-spending <- read.csv('expends_data/expenditure_data.csv')
+spending <- read.csv('expends_data/expenditure_data_new.csv')
 results <- read.csv('Results/Clean/women_allresults.csv')
 
 spending_subset <- subset(spending, select=c(Cycle, Amount, Candid))
