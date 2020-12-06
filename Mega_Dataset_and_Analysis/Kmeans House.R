@@ -92,7 +92,8 @@ spending_by_cand$cluster.6 = replace(clus.6, which(cs != 6), 0)
 clus.7 <- replace(cs, which(cs == 7), 1)
 spending_by_cand$cluster.7 = replace(clus.7, which(cs != 7), 0)
 
-write.csv(spending_by_cand,'mega_data_with_clusters.csv')
+# only run to overwrite the dataset
+#write.csv(spending_by_cand,'mega_data_with_clusters.csv')
 
 
 
