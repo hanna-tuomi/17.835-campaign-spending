@@ -71,9 +71,9 @@ cluster1.match <- matchit(cluster.1 ~ Year + incumbent + woman + PARTY + Total.p
                             All.people + Percent.high.school.graduate.or.higher + Percent.bachelor.s.degree.or.higher, data = dataset)
 sum.cluster1 <- summary(cluster1.match)
 plot(sum.cluster1,
-     cex=0.5)
+     cex=0.5, main='Cluster 1')
 c1.data <- match.data(cluster1.match)
-dataset$GE.perc <- numeric(dataset$GE.perc)
+dataset$GE.perc <- as.numeric(dataset$GE.perc)
 
 
 cluster2.match <- matchit(cluster.2 ~ Year + incumbent + woman + PARTY + Total.population + 
@@ -84,7 +84,7 @@ cluster2.match <- matchit(cluster.2 ~ Year + incumbent + woman + PARTY + Total.p
                             All.people + Percent.high.school.graduate.or.higher + Percent.bachelor.s.degree.or.higher, data = dataset)
 sum.cluster2 <- summary(cluster2.match)
 plot(sum.cluster2,
-     cex=0.5)
+     cex=0.5, main='Cluster 2')
 
 
 cluster3.match <- matchit(cluster.3 ~ Year + incumbent + woman + PARTY + Total.population + 
@@ -95,7 +95,7 @@ cluster3.match <- matchit(cluster.3 ~ Year + incumbent + woman + PARTY + Total.p
                             All.people + Percent.high.school.graduate.or.higher + Percent.bachelor.s.degree.or.higher, data = dataset)
 sum.cluster3 <- summary(cluster3.match)
 plot(sum.cluster3,
-     cex=0.5)
+     cex=0.5, main='Cluster 3')
 
 
 cluster4.match <- matchit(cluster.4 ~ Year + incumbent + woman + PARTY + Total.population + 
@@ -106,7 +106,7 @@ cluster4.match <- matchit(cluster.4 ~ Year + incumbent + woman + PARTY + Total.p
                             All.people + Percent.high.school.graduate.or.higher + Percent.bachelor.s.degree.or.higher, data = dataset)
 sum.cluster4 <- summary(cluster4.match)
 plot(sum.cluster4,
-     cex=0.5)
+     cex=0.5, main='Cluster 4')
 
 
 cluster5.match <- matchit(cluster.5 ~ Year + incumbent + woman + PARTY + Total.population + 
@@ -117,7 +117,7 @@ cluster5.match <- matchit(cluster.5 ~ Year + incumbent + woman + PARTY + Total.p
                             All.people + Percent.high.school.graduate.or.higher + Percent.bachelor.s.degree.or.higher, data = dataset)
 sum.cluster5 <- summary(cluster5.match)
 plot(sum.cluster5,
-     cex=0.5)
+     cex=0.5, main='Cluster 5')
 
 cluster6.match <- matchit(cluster.6 ~ Year + incumbent + woman + PARTY + Total.population + 
                             X18.years.and.over + Under.20 + X20.to.44.years + X45.to.64.years + Over.65 + Median.age..years. + 
@@ -127,7 +127,7 @@ cluster6.match <- matchit(cluster.6 ~ Year + incumbent + woman + PARTY + Total.p
                             All.people + Percent.high.school.graduate.or.higher + Percent.bachelor.s.degree.or.higher, data = dataset)
 sum.cluster6 <- summary(cluster6.match)
 plot(sum.cluster6,
-     cex=0.5)
+     cex=0.5, main='Cluster 6')
 
 cluster7.match <- matchit(cluster.7 ~ Year + incumbent + woman + PARTY + Total.population + 
                             X18.years.and.over + Under.20 + X20.to.44.years + X45.to.64.years + Over.65 + Median.age..years. + 
@@ -137,14 +137,14 @@ cluster7.match <- matchit(cluster.7 ~ Year + incumbent + woman + PARTY + Total.p
                             All.people + Percent.high.school.graduate.or.higher + Percent.bachelor.s.degree.or.higher, data = dataset)
 sum.cluster7 <- summary(cluster7.match)
 plot(sum.cluster7,
-     cex=0.5)
+     cex=0.5, main='Cluster 7')
 
 
-att(cluster1.match, Y=voteshares)
-att(cluster2.match, Y=voteshares)
-att(cluster3.match, Y=voteshares)
-att(cluster4.match, Y=voteshares)
-att(cluster5.match, Y=voteshares)
-att(cluster6.match, Y=voteshares)
-att(cluster7.match, Y=voteshares)
+cat('ATT cluster 1:', att(cluster1.match, Y=voteshares), '\n')
+cat('ATT cluster 2:',att(cluster2.match, Y=voteshares), '\n')
+cat('ATT cluster 3:',att(cluster3.match, Y=voteshares), '\n')
+cat('ATT cluster 4:',att(cluster4.match, Y=voteshares), '\n')
+cat('ATT cluster 5:',att(cluster5.match, Y=voteshares), '\n')
+cat('ATT cluster 6:',att(cluster6.match, Y=voteshares), '\n')
+cat('ATT cluster 7:',att(cluster7.match, Y=voteshares), '\n')
 
