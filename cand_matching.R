@@ -1,5 +1,7 @@
 setwd("~/Desktop/17.835-campaign-spending/Mega_Dataset_and_Analysis")
 library(MatchIt)
+library(stringr)
+
 
 dataset <- read.csv("mega_data_with_clusters.csv")
 ?MatchIt
@@ -26,6 +28,40 @@ for(i in 1:length(dataset$PARTY)){
 }
 unique(dataset$PARTY)
 
+# NOTE: MatchItSE was unavailable, but here is the code for the att() function that was on it
+att <- function(obj, Y){
+  stopifnot(methods::is(obj, "matchit"))
+  ww <- obj$weights
+  tt <- obj$treat
+  mut <- stats::weighted.mean(Y[ww > 0 & tt == 1], ww[ww > 0 & tt == 1])
+  muc <- stats::weighted.mean(Y[ww > 0 & tt == 0], ww[ww > 0 & tt == 0])
+  mut - muc
+}
+
+as.numeric(substr(dataset$GE.perc[1], 1, 5))
+as.numeric(63.60)
+which(strsplit(dataset$GE.perc[1], "")[[1]]=="%")
+dataset$GE.perc[1]
+
+# Iterates through the General Election voteshares and stores in a list - if no GE is available, then uses the primary percentage
+# Gets a consolidated lists of voteshares
+voteshares <- c(1:665)
+for(i in 1:655) {
+  if(dataset$GE.perc[i] != "") {
+    perc_index <- which(strsplit(dataset$GE.perc[i], "")[[1]]=="%")
+    voteshares[i] <- substr(dataset$GE.perc[i], 1, perc_index-1)
+  }
+  else if(dataset$primary.perc[i] != "") {
+    perc_index <- which(strsplit(dataset$primary.perc[i], "")[[1]]=="%")
+    voteshares[i] <- substr(dataset$primary.perc[i], 1, perc_index-1)
+  }
+  else {
+    voteshares[i] <- 0
+  }
+}
+
+voteshares <- as.numeric(voteshares)
+
 # Data match based on district demographics + candidate attributes
 cluster1.match <- matchit(cluster.1 ~ Year + incumbent + woman + PARTY + Total.population + 
                             X18.years.and.over + Under.20 + X20.to.44.years + X45.to.64.years + Over.65 + Median.age..years. + 
@@ -36,7 +72,8 @@ cluster1.match <- matchit(cluster.1 ~ Year + incumbent + woman + PARTY + Total.p
 sum.cluster1 <- summary(cluster1.match)
 plot(sum.cluster1,
      cex=0.5)
-
+c1.data <- match.data(cluster1.match)
+dataset$GE.perc <- numeric(dataset$GE.perc)
 
 
 cluster2.match <- matchit(cluster.2 ~ Year + incumbent + woman + PARTY + Total.population + 
@@ -82,7 +119,6 @@ sum.cluster5 <- summary(cluster5.match)
 plot(sum.cluster5,
      cex=0.5)
 
-
 cluster6.match <- matchit(cluster.6 ~ Year + incumbent + woman + PARTY + Total.population + 
                             X18.years.and.over + Under.20 + X20.to.44.years + X45.to.64.years + Over.65 + Median.age..years. + 
                             White + Black.or.African.American + American.Indian.and.Alaska.Native + Asian + Native.Hawaiian.and.Other.Pacific.Islander + Some.other.race + Two.or.more.races + Hispanic.or.Latino..of.any.race. + 
@@ -92,7 +128,6 @@ cluster6.match <- matchit(cluster.6 ~ Year + incumbent + woman + PARTY + Total.p
 sum.cluster6 <- summary(cluster6.match)
 plot(sum.cluster6,
      cex=0.5)
-
 
 cluster7.match <- matchit(cluster.7 ~ Year + incumbent + woman + PARTY + Total.population + 
                             X18.years.and.over + Under.20 + X20.to.44.years + X45.to.64.years + Over.65 + Median.age..years. + 
@@ -105,4 +140,11 @@ plot(sum.cluster7,
      cex=0.5)
 
 
+att(cluster1.match, Y=voteshares)
+att(cluster2.match, Y=voteshares)
+att(cluster3.match, Y=voteshares)
+att(cluster4.match, Y=voteshares)
+att(cluster5.match, Y=voteshares)
+att(cluster6.match, Y=voteshares)
+att(cluster7.match, Y=voteshares)
 
