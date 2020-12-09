@@ -10,22 +10,22 @@ sd.spending <- colSds(as.matrix(clusters[,6:16]))
 
 overall.perc.incumbent<- nrow(clusters[clusters$incumbent == '(I)',])/nrow(clusters)
 is <- nrow(clusters[clusters$incumbent == '(I)',])
-sd.perc.incumbent <- sqrt(((is-overall.perc.incumbent)^2 + 
-                             ((nrow(clusters)-is)-overall.perc.incumbent)^2)/(nrow(clusters)-1))
+sd.perc.incumbent <- sqrt((is*((1-overall.perc.incumbent)^2) + 
+                             (nrow(clusters)-is)*((0-overall.perc.incumbent)^2))/(nrow(clusters)-1))
 
 overall.perc.D <- nrow(clusters[clusters$PARTY == 'D',])/nrow(clusters)
 Ds <- nrow(clusters[clusters$PARTY == 'D',])
-sd.perc.D <-sqrt(((Ds-overall.perc.D)^2 + 
-                    ((nrow(clusters)-Ds)-overall.perc.D)^2)/(nrow(clusters)-1))
+sd.perc.D <-sqrt((Ds*((1-overall.perc.D)^2) + 
+                    (nrow(clusters)-Ds)*((0-overall.perc.D)^2))/(nrow(clusters)-1))
 
 overall.perc.unopposed.primary <- nrow(clusters[clusters$PRIMARY == 'Unopposed',])/nrow(clusters)
 unopposed <- nrow(clusters[clusters$PRIMARY == 'Unopposed',])
-sd.perc.unopposed.primary <- sqrt(((unopposed-overall.perc.unopposed.primary)^2 + 
-                                     ((nrow(clusters)-unopposed)-overall.perc.unopposed.primary)^2)/(nrow(clusters)-1))
+sd.perc.unopposed.primary <- sqrt((unopposed*((1-overall.perc.unopposed.primary)^2) + 
+                                     (nrow(clusters)-unopposed)*((0-overall.perc.unopposed.primary)^2))/(nrow(clusters)-1))
 
 overall.perc.woman <- mean(clusters$woman)
 women <- nrow(clusters[clusters$woman == 1,])
-sd.perc.woman <- sqrt(((women-overall.perc.woman)^2 + ((nrow(clusters)-women)-overall.perc.woman)^2)/(nrow(clusters)-1))
+sd.perc.woman <- sqrt((women*((1-overall.perc.woman)^2) + (nrow(clusters)-women)*((0-overall.perc.woman))^2)/(nrow(clusters)-1))
 
 overall.demo.means <- colMeans(clusters[,39:63])
 sd.demo.means <- colSds(as.matrix(clusters[,39:63]))
@@ -43,8 +43,15 @@ sd.vector <- c('Overall', sd.spending, sd.perc.incumbent, sd.perc.D, sd.perc.uno
 sds<- rbind(columns, sd.vector)
 sds <- as.data.frame(sds[2,2:41])
 
+members <- c()
+
 for (i in 1:7){
   cluster <- clusters[clusters$cluster ==i,]
+  if (i==6){
+    example <- cluster[20,]
+  }
+  num <- nrow(cluster)
+  members <- append(members, num)
   spending.averages <- colMeans(cluster[,6:16])
   perc.incumbent <- nrow(cluster[cluster$incumbent == '(I)',])/nrow(cluster)
   perc.D <- nrow(cluster[cluster$PARTY == 'D',])/nrow(cluster)
@@ -73,23 +80,54 @@ var <- as.character(var)
 
 # plot the differences to the mean
 par(las=1, mar=c(5,10,5,3))
-plot(as.matrix(distance_to_means[1,]),c(1:40), col='red', yaxt='n', pch=15,
-     ylab='', xlab="Difference in Cluster to Overall Mean")
+plot(as.matrix(distance_to_means[1,]),c(1:40), col="#E78AC3", yaxt='n', pch=15,
+     ylab='', xlab="Difference in Cluster to Overall Mean", xlim=c(-1, 1),
+     main='Difference in Variable Means for Spending Strategy Clusters')
 title(ylab="Variable", mgp=c(11, 0, 0))
-axis(2, at=1:40, labels=colnames(distance_to_means), cex.axis=1)
-points(as.matrix(distance_to_means[5,]),c(1:40), col='blue', pch=16)
-points(as.matrix(distance_to_means[6,]), c(1:40), col='purple', pch=17)
+axis(2, at=1:40, labels=colnames(distance_to_means), cex.axis=0.5)
+points(as.matrix(distance_to_means[5,]),c(1:40), col="#8DA0CB", pch=16)
+points(as.matrix(distance_to_means[6,]), c(1:40), col="#FFD92F", pch=17)
 
 abline(v=0)
 abline(h=11.5, col='black')
 abline(h=15.5, col='black')
-legend(0.25,35, legend=c('Strategy 1', 'Strategy 5', 'Strategy 6'), 
-       col=c('red', 'blue', 'purple'), pch=c(15, 16,17), cex=0.5)
+legend(0.5,35, legend=c('Strategy 1','Strategy 5', 'Strategy 6'), 
+       col=c("#E78AC3","#8DA0CB", "#FFD92F"), pch=c(15,16,17), cex=1)
 
 
 for (i in 1:40){
   s <- as.numeric(sds[i,])
   arrows(x0=-s, y0=i, x1=s, y1=i, code=3, col="darkgray", lwd=0.3, angle=90, length=0.025)
 }
+
+c.names <- c('Cluster 1','Cluster 2','Cluster 3','Cluster 4','Cluster 5','Cluster 6','Cluster 7')
+members <- rbind(c.names, members)
+
+
+# other clusters
+
+# plot the differences to the mean
+par(las=1, mar=c(5,10,5,3))
+plot(as.matrix(distance_to_means[2,]),c(1:40), col="#E78AC3", yaxt='n', pch=15,
+     ylab='', xlab="Difference in Cluster to Overall Mean", xlim=c(-1, 1),
+     main='Difference in Variable Means for Spending Strategy Clusters 2')
+title(ylab="Variable", mgp=c(11, 0, 0))
+axis(2, at=1:40, labels=colnames(distance_to_means), cex.axis=0.5)
+points(as.matrix(distance_to_means[3,]),c(1:40), col="#8DA0CB", pch=16)
+points(as.matrix(distance_to_means[4,]), c(1:40), col="#FFD92F", pch=17)
+points(as.matrix(distance_to_means[7,]), c(1:40), col="#A6D854", pch=17)
+
+abline(v=0)
+abline(h=11.5, col='black')
+abline(h=15.5, col='black')
+legend(0.5,35, legend=c('Strategy 2','Strategy 3', 'Strategy 4', 'Strategy 7'), 
+       col=c("#E78AC3","#8DA0CB", "#FFD92F","#A6D854"), pch=c(15,16,17), cex=1)
+
+
+for (i in 1:40){
+  s <- as.numeric(sds[i,])
+  arrows(x0=-s, y0=i, x1=s, y1=i, code=3, col="darkgray", lwd=0.3, angle=90, length=0.0)
+}
+
 
 
