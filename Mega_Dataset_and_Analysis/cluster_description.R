@@ -87,14 +87,6 @@ legend(0.25,35, legend=c('Strategy 1', 'Strategy 5', 'Strategy 6'),
        col=c('red', 'blue', 'purple'), pch=c(15, 16,17), cex=0.5)
 
 
-
-
-
-
-
-
->>>>>>> 8b3d6c2dee67e3ec1c7c206ccd806941df722288
-
 for (i in 1:40){
   s <- as.numeric(sds[i,])
   arrows(x0=-s, y0=i, x1=s, y1=i, code=3, col="darkgray", lwd=0.3, angle=90, length=0.025)
