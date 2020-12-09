@@ -16,6 +16,7 @@ summaries <- c('Overall',overall.spending, overall.perc.incumbent, overall.perc.
                overall.perc.woman, overall.demo.means)
 
 summary <- rbind(columns, summaries) 
+colnames(summary) <- columns
 
 for (i in 1:7){
   cluster <- clusters[clusters$cluster ==i,]
@@ -142,10 +143,14 @@ ggplot(as.data.frame(distance_to_means), aes(y=var[2], x=var[1])) + geom_point(s
 
 
 # plot the differences to the mean
-plot(as.matrix(distance_to_means[1,]),c(1:40), col='red', ylim=)
+par(las=1, mar=c(7,20,10,5))
+plot(as.matrix(distance_to_means[1,]),c(1:40), col='red', yaxt='n')
+axis(2, at=1:40, labels=colnames(distance_to_means), cex.axis=1)
 points(as.matrix(distance_to_means[5,]),c(1:40), col='blue')
 points(as.matrix(distance_to_means[6,]), c(1:40), col='purple')
 abline(v=0)
+abline(h=11.5, col='gray')
+abline(h=15.5, col='gray')
 
 
 
