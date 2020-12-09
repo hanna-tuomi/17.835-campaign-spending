@@ -140,20 +140,12 @@ ggplot(as.data.frame(distance_to_means), aes(y=var[2], x=var[1])) + geom_point(s
 #   theme(plot.title = element_text(size = 14, hjust = 0.5), 
 #         axis.title=element_text(size=14))
 
-print(distance_to_means[1,])
-print(1:40)
-par(mar=c(0.1, 0.1,0.1,0.1))
-plot(distance_to_means[1,], c(1:40))
 
-dotchart(as.matrix(distance_to_means[1,]), labels= colnames(distance_to_means), 
-         col='red', cex=0.3)
+# plot the differences to the mean
+plot(as.matrix(distance_to_means[1,]),c(1:40), col='red', ylim=)
+points(as.matrix(distance_to_means[5,]),c(1:40), col='blue')
+points(as.matrix(distance_to_means[6,]), c(1:40), col='purple')
 abline(v=0)
 
-dotchart(as.matrix(distance_to_means[5,]), labels= colnames(distance_to_means), 
-         col='blue', cex=0.3)
-abline(v=0)
 
-dotchart(as.matrix(distance_to_means[6,]), labels= colnames(distance_to_means), 
-         col='green', cex=0.3)
-abline(v=0)
 
