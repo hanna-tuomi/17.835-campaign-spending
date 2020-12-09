@@ -33,6 +33,34 @@ for (i in 1:7){
 
 summary <- as.data.frame(summary[2:9,2:ncol(summary)])
 
+# plotting the differences
+distance_to_means <- data.frame()
+for(i in 2:8) {
+  distance_to_means <- rbind(distance_to_means, as.numeric(summary[i,]) - as.numeric(summary[1,]))
+}
+colnames(distance_to_means) <- colnames(summary)
+rownames(distance_to_means) <- rownames(summary)[2:8]
+
+var <- labels(distance_to_means)
+var <- as.character(var)
+
+# plot the differences to the mean
+par(las=1, mar=c(7,20,10,5))
+plot(as.matrix(distance_to_means[1,]),c(1:40), col='red', yaxt='n')
+axis(2, at=1:40, labels=colnames(distance_to_means), cex.axis=1)
+points(as.matrix(distance_to_means[5,]),c(1:40), col='blue')
+points(as.matrix(distance_to_means[6,]), c(1:40), col='purple')
+abline(v=0)
+abline(h=11.5, col='gray')
+abline(h=15.5, col='gray')
+
+
+
+
+
+
+
+
 
 # clustering approach
 
@@ -120,37 +148,6 @@ text(cluster_6$X_first_score, cluster_6$X_second_score,
 text(cluster_7$X_first_score, cluster_7$X_second_score, 
      labels=rep(7,length(cluster_7)), col="#E5C494", cex=1)
 
-
-distance_to_means <- data.frame()
-for(i in 2:8) {
-  distance_to_means <- rbind(distance_to_means, as.numeric(summary[i,]) - as.numeric(summary[1,]))
-}
-colnames(distance_to_means) <- colnames(summary)
-rownames(distance_to_means) <- rownames(summary)[2:8]
-
-var <- labels(distance_to_means)
-var <- as.character(var)
-
-ggplot(as.data.frame(distance_to_means[1,]), aes(y=distance_to_means, x=var))
-
-ggplot(as.data.frame(distance_to_means), aes(y=var[2], x=var[1])) + geom_point(size=2) + coord_flip()
-# ggplot(as.data.frame(distance_to_means), aes(y=distance_to_means, x=var)) + geom_hline(yintercept=0) + 
-#   geom_point(size=2) + coord_flip() + 
-#   ylab("Standardized difference in means") + xlab("Covariates")+ 
-#   ggtitle("Standardized differences in means before matching") +
-#   theme(plot.title = element_text(size = 14, hjust = 0.5), 
-#         axis.title=element_text(size=14))
-
-
-# plot the differences to the mean
-par(las=1, mar=c(7,20,10,5))
-plot(as.matrix(distance_to_means[1,]),c(1:40), col='red', yaxt='n')
-axis(2, at=1:40, labels=colnames(distance_to_means), cex.axis=1)
-points(as.matrix(distance_to_means[5,]),c(1:40), col='blue')
-points(as.matrix(distance_to_means[6,]), c(1:40), col='purple')
-abline(v=0)
-abline(h=11.5, col='gray')
-abline(h=15.5, col='gray')
 
 
 
