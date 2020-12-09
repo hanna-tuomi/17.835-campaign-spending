@@ -46,8 +46,9 @@ var <- as.character(var)
 
 # plot the differences to the mean
 par(las=1, mar=c(7,20,10,5))
-plot(as.matrix(distance_to_means[1,]),c(1:40), col='red', yaxt='n',
-     xlab='Difference in Cluster to Overall Mean', ylab='Variable', pch=15)
+plot(as.matrix(distance_to_means[1,]),c(1:40), col='red', yaxt='n', pch=15,
+     ylab='', xlab="Difference in Cluster to Overall Mean")
+title(ylab="Variable", mgp=c(11, 0, 0))
 axis(2, at=1:40, labels=colnames(distance_to_means), cex.axis=1)
 points(as.matrix(distance_to_means[5,]),c(1:40), col='blue', pch=16)
 points(as.matrix(distance_to_means[6,]), c(1:40), col='purple', pch=17)
@@ -55,7 +56,7 @@ abline(v=0)
 abline(h=11.5, col='gray')
 abline(h=15.5, col='gray')
 legend(0.25,35, legend=c('Strategy 1', 'Strategy 5', 'Strategy 6'), 
-       col=c('red', 'blue', 'purple'), pch=c(15, 16,17), cex=3)
+       col=c('red', 'blue', 'purple'), pch=c(15, 16,17), cex=.7)
 
 
 
