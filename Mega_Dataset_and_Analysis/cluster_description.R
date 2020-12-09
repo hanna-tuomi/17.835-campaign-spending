@@ -1,5 +1,5 @@
 # Defining the clusters
-
+library(ggplot2)
 clusters <- read.csv('mega_data_with_clusters.csv')
 
 
@@ -24,7 +24,7 @@ for (i in 1:7){
   perc.D <- nrow(cluster[cluster$PARTY == 'D',])/nrow(cluster)
   perc.unopposed.primary <- nrow(cluster[cluster$PRIMARY == 'Unopposed',])/nrow(cluster)
   perc.woman <- mean(cluster$woman)
-  demo.means <- colMeans(clusters[,39:63])
+  demo.means <- colMeans(cluster[,39:63])
   new <- c(i,spending.averages, perc.incumbent, perc.D, perc.unopposed.primary,
                  perc.woman, demo.means)
   summary <- rbind(summary, new)
@@ -118,3 +118,24 @@ text(cluster_6$X_first_score, cluster_6$X_second_score,
      labels=rep(6,length(cluster_6)), col="#FFD92F", cex=1)
 text(cluster_7$X_first_score, cluster_7$X_second_score, 
      labels=rep(7,length(cluster_7)), col="#E5C494", cex=1)
+
+
+distance_to_means <- data.frame()
+for(i in 2:8) {
+  distance_to_means <- rbind(distance_to_means, as.numeric(summary[i,]) - as.numeric(summary[1,]))
+}
+colnames(distance_to_means) <- colnames(summary)
+rownames(distance_to_means) <- rownames(summary)[2:8]
+
+var <- labels(distance_to_means)
+var <- as.character(var)
+
+ggplot(as.data.frame(distance_to_means[1,]), aes(y=distance_to_means, x=var))
+
+ggplot(as.data.frame(distance_to_means), aes(y=var[2], x=var[1])) + geom_point(size=2) + coord_flip()
+# ggplot(as.data.frame(distance_to_means), aes(y=distance_to_means, x=var)) + geom_hline(yintercept=0) + 
+#   geom_point(size=2) + coord_flip() + 
+#   ylab("Standardized difference in means") + xlab("Covariates")+ 
+#   ggtitle("Standardized differences in means before matching") +
+#   theme(plot.title = element_text(size = 14, hjust = 0.5), 
+#         axis.title=element_text(size=14))
